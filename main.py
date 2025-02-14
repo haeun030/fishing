@@ -2,6 +2,8 @@
 import streamlit as st 
 from pages import login as lp
 from pages import signup as su
+from pages import fish as fi
+import sqlite3
 
 def show_main_content():
     st.title("🎣 Fishing App에 오신 것을 환영합니다!")
@@ -42,12 +44,18 @@ def main():
     if 'logged_in' not in st.session_state:
         st.session_state.logged_in = False
 
-    # 사이드바 네비게이션
+        # 사이드바 네비게이션
     if not st.session_state.logged_in:
         if st.sidebar.button("로그인"): 
             st.session_state.page = 'login'
     else:
         st.sidebar.write(f"환영합니다, {st.session_state.name}님!")
+        
+        # Fish 버튼 추가
+        if st.sidebar.button("Fish"):
+            st.session_state.page = 'fish'
+            st.rerun()
+        
         if st.sidebar.button("로그아웃"):
             st.session_state.logged_in = False
             st.session_state.page = 'main'
@@ -60,6 +68,11 @@ def main():
         lp.show_login_page()
     elif st.session_state.page == 'signup':
         su.show_signup_page()
+    elif st.session_state.page == 'fish':
+        fi.show_fish_page()
+    
+    conn = sqlite3.connect('fishing.db')
+    cursor = conn.cursor()
 
 if __name__ == "__main__":
     main()

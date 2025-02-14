@@ -8,11 +8,12 @@ class Database:
         self.db_name = db_name
         self.init_db()
     
-    def init_db(self):
+    def init_db(self): #테이블 생성
         """데이터베이스 초기화"""
         with sqlite3.connect(self.db_name) as conn:
             c = conn.cursor()
-            c.execute('''
+            #테이블 생성
+            c.execute(''' 
                 CREATE TABLE IF NOT EXISTS users (
                     username TEXT PRIMARY KEY,
                     password TEXT NOT NULL,
