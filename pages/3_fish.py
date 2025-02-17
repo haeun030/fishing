@@ -1,30 +1,26 @@
-# fish.py
+# 3_fish.py
 import streamlit as st
 from database import Database
 import pandas as pd
 from datetime import datetime
 
+# 세션 상태 확인
+if 'logged_in' not in st.session_state:
+    st.session_state.logged_in = False
 
-def show_fish_page():
-    if not st.session_state.logged_in:
-        st.error("로그인이 필요한 서비스입니다.")
-        return
-    
-    db = Database()
-    
-    st.title("🐟 나의 도감")
-    
-    # 탭 생성
-    tab1, tab2 = st.tabs(["도감", "물고기 등록"])
-    
-    with tab1:
-        show_collection(db)
-    
-    with tab2:
-        record_fish(db)
+if not st.session_state.logged_in:
+    st.error("로그인이 필요한 서비스입니다.")
+    st.stop()
 
-def show_collection(db):
-    """도감 보기"""
+# 데이터베이스 연결
+db = Database()
+
+st.title("🐟 나의 도감")
+
+# 탭 생성
+tab1, tab2 = st.tabs(["도감", "물고기 등록"])
+
+with tab1:
     # 전체 물고기 목록 가져오기
     all_fish = db.get_all_fish()
     # 사용자가 잡은 물고기 목록 가져오기
@@ -68,8 +64,7 @@ def show_collection(db):
                 st.markdown("**???**")
                 st.write("아직 발견하지 못한 물고기입니다.")
 
-def record_fish(db):
-    """물고기 잡은 기록 등록"""
+with tab2:
     st.subheader("🎣 물고기 등록")
     
     # 모든 물고기 정보 가져오기
