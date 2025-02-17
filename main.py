@@ -3,6 +3,7 @@ import streamlit as st
 from pages import login as lp
 from pages import signup as su
 from pages import fish as fi
+from pages import weather as we
 import sqlite3
 
 def show_main_content():
@@ -30,10 +31,6 @@ def show_main_content():
         st.write("정확한 조석 정보로 최적의 낚시 시간을 찾아보세요.")
         
     with col2:
-        st.markdown("#### 📱 모바일 지원")
-        st.write("언제 어디서나 편리하게 이용할 수 있습니다.")
-        
-    with col3:
         st.markdown("#### 👥 커뮤니티")
         st.write("다른 낚시러들과 정보를 공유해보세요.")
 
@@ -56,6 +53,10 @@ def main():
             st.session_state.page = 'fish'
             st.rerun()
         
+        if st.sidebar.button("weather"):
+            st.session_state.page = 'weather'
+            st.rerun()
+        
         if st.sidebar.button("로그아웃"):
             st.session_state.logged_in = False
             st.session_state.page = 'main'
@@ -70,6 +71,8 @@ def main():
         su.show_signup_page()
     elif st.session_state.page == 'fish':
         fi.show_fish_page()
+    elif st.session_state.page == 'weather':
+        we.show_weather_tide_page()
     
     conn = sqlite3.connect('fishing.db')
     cursor = conn.cursor()
