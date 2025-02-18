@@ -1,6 +1,6 @@
-# login.py
 import streamlit as st
 from database import Database
+from session_manager import init_session, set_page
 
 st.title("로그인")
 
@@ -21,8 +21,8 @@ with st.form("login_form"):
                 st.session_state.logged_in = True
                 st.session_state.username = username
                 st.session_state.name = user_data['name']
-                st.session_state.page = 'main'
-                st.rerun()
+                st.session_state.is_captain = user_data['is_captain']
+                set_page('main')
             else:
                 st.error("아이디 또는 비밀번호가 잘못되었습니다.")
         else:
@@ -32,5 +32,4 @@ with st.form("login_form"):
 st.markdown("---")
 st.write("계정이 없으신가요?")
 if st.button("회원가입"):
-    st.session_state.page = 'signup'
-    st.rerun()
+    set_page('signup')
