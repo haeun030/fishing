@@ -1,0 +1,3 @@
+[server]
+enableCORS = true
+enableXsrfProtection = false
